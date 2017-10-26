@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!--为移动设备添加 viewport-->
+        <meta name="viewport" content="width=width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!-- 优先使用IE最新版本或chrome -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <!-- 设置iphone对手机号码显示不高亮 -->
+        <meta name="format-detection" content="telephone=no">
+        <title></title>
+        <style type="text/css">
+            .fl{float:left;}
+            .fr{float:right;}
+            .clearfix:after{
+                content:'';
+                display:block;
+                clear: both;
+            }
+          p{
+              font-size: 12px;
+          }
+             #div1{
+                  background: #cccccc;
+                  width:100%;
+                  height: 30px;
+                  overflow: hidden;
+                  position: relative;
+                  margin: 50px auto;
+             }
+            #div2{
+                height: 30px;
+                width: 30px;
+                background: red;
+                position: absolute;
+                left:0px;
+                top:0px;
+            }
+        </style>       
+    </head>
+    <body style="margin: 0;">
+        <div id="div1" class="clearfix">
+             <div id="div2"></div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        var div1 = document.getElementById("div1");
+        var div2 = document.getElementById("div2");       
+        div2.addEventListener('touchmove', function(event) {
+            event.preventDefault();
+
+            var styles = window.getComputedStyle(div1,null);
+            var width=styles.width;//灰色块的长度，用于计算红色块最大滑动的距离
+            console.log(width);
+            if (event.targetTouches.length == 1) {
+                var touch = event.targetTouches[0];
+
+                //计算红色块的left值，pageX是相对于整个页面的坐标，减去15（红色块长度的一半）是为了让鼠标点显示在中间，可以更改值看看效果，如果灰色块不是紧挨着屏幕，那还需要计算灰色块距离左屏幕的距离，应为pageX！！！
+                moveleft = touch.pageX-15;
+                if(moveleft<=0){//红色块的left值最小是0；
+                    moveleft=0;
+                };
+                if(moveleft>=parseInt(width)-30){////红色块的left值最小是灰色块的width减去红色块的width；
+                    moveleft=parseInt(width)-30;
+                }
+                div2.style.left=moveleft+"px";//最后把left值附上。
+            };
+        });
+    </script>
+</html>
